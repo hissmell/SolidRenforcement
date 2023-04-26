@@ -34,6 +34,20 @@ class MultiBanditEnv(BaseEnv):
     def get_observation_space(self):
         return None
 
+class ContextualBanditEnv(BaseEnv):
+    def __init__(self,mu_list,sigma_list):
+        super(ContextualBanditEnv,self).__init__()
+        self.num_bandits = len(mu_list)
+        self.mu_list = mu_list
+        self.sigma_list = sigma_list
+        self.bandit_list = [SingleBanditEnv(mu_list[i],sigma_list[i]) for i in range(self.num_bandits)]
+        self.bandit_nums = [i for i in range(self.num_bandits)]
+        self.bandit_num = 0
+    def step(self,action):
+        reward = self.bandit_list[self.bandit_num].step()
+
+        return
+
 
 if __name__ == "__main__":
     env = SingleBanditEnv(0,1)
